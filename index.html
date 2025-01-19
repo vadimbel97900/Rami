@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Updated Slider</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Запрет скроллинга */
+    body.no-scroll {
+      overflow: hidden;
+      touch-action: none;
+    }
+  </style>
 </head>
 <body>
 <div id="initial-screen" class="slider-container">
@@ -23,6 +30,25 @@
   <div class="slider" id="slider"></div>
   <div class="swipe-area right-area" onclick="nextSlide()"></div>
 </div>
+<script>
+  // Запрет скроллинга на мобильных устройствах
+  function preventScrolling() {
+    document.body.classList.add('no-scroll');
+    document.body.addEventListener('touchmove', preventDefault, { passive: false });
+  }
+
+  function allowScrolling() {
+    document.body.classList.remove('no-scroll');
+    document.body.removeEventListener('touchmove', preventDefault);
+  }
+
+  function preventDefault(e) {
+    e.preventDefault();
+  }
+
+  // Вызов функции блокировки при загрузке страницы
+  preventScrolling();
+</script>
 <script src="script.js"></script>
 </body>
 </html>
