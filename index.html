@@ -1,54 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Updated Slider</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    /* Запрет скроллинга */
-    body.no-scroll {
-      overflow: hidden;
-      touch-action: none;
-    }
-  </style>
-</head>
-<body>
-<div id="initial-screen" class="slider-container">
-  <div class="buttons">
-    <button onclick="filterSlides('pediatrics')">Педиатры</button>
-    <button onclick="filterSlides('gastro')">Гастро</button>
-    <button onclick="filterSlides('pediatric_gastro')">Гастро дитячі</button>
-    <button onclick="filterSlides('advanced_family')">Сімейні "продвинуті"</button>
-    <button onclick="filterSlides('beginner_family')">Сімейні "початківці"</button>
-    <button onclick="filterSlides('ent')">Лор</button>
-  </div>
-</div>
-<div id="slider-screen" class="slider-container" style="display: none;">
-  <div class="back-button" onclick="goToInitialScreen()"></div>
-  <div class="swipe-area left-area" onclick="prevSlide()"></div>
-  <div class="slider" id="slider"></div>
-  <div class="swipe-area right-area" onclick="nextSlide()"></div>
-</div>
-<script>
-  // Запрет скроллинга на мобильных устройствах
-  function preventScrolling() {
-    document.body.classList.add('no-scroll');
-    document.body.addEventListener('touchmove', preventDefault, { passive: false });
-  }
+/* Общие стили */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  function allowScrolling() {
-    document.body.classList.remove('no-scroll');
-    document.body.removeEventListener('touchmove', preventDefault);
-  }
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+  overflow: hidden; /* Убираем полосы прокрутки */
+}
 
-  function preventDefault(e) {
-    e.preventDefault();
-  }
+.slider-container {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  height: 100%;
+  max-height: 100vh; /* Ограничиваем высоту окна */
+  aspect-ratio: 16 / 9; /* Пропорции презентации */
+  overflow: hidden;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background: white;
+}
 
-  // Вызов функции блокировки при загрузке страницы
-  preventScrolling();
-</script>
-<script src="script.js"></script>
-</body>
-</html>
+.slider {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  height: 100%;
+}
+
+.slide {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: contain; /* Изображение сохраняет пропорции */
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Альтернатива для изображений внутри контейнеров */
+}
+
+.swipe-area, .back-button {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20%;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.left-area {
+  left: 0;
+}
+
+.right-area {
+  right: 0;
+}
+
+.back-button {
+  top: 10px;
+  left: 10px;
+  width: 50px;
+  height: 50px;
+  background: transparent;
+  border: 1px solid transparent;
+  z-index: 15;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
